@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>UCBT - United Crypto Bank Token | Utility & Gas Token</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://sdk.moonpay.com/v2/moonpay.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .gradient-bg { background: linear-gradient(135deg, #0F172A 0%, #1E1B2E 100%); }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.08); }
+        .btn-primary { background: linear-gradient(90deg, #F59E0B 0%, #F97316 100%); transition: all 0.2s ease; }
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.4); }
+        .lang-btn { transition: all 0.2s; padding: 6px 12px; border-radius: 40px; background: rgba(255,255,255,0.05); }
+        .lang-btn.active { background: #F59E0B; color: black; }
+        .token-badge { background: rgba(245, 158, 11, 0.2); border-left: 3px solid #F97316; }
+    </style>
+</head>
+<body class="gradient-bg text-white">
+
+    <header class="fixed top-0 left-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10">
+        <div class="container mx-auto px-5 py-4 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center font-bold text-xl">UCBT</div>
+                <span class="font-bold text-xl tracking-tight">United Crypto Bank Token</span>
+            </div>
+            <div class="flex flex-wrap gap-2" id="language-switcher"></div>
+        </div>
+    </header>
+
+    <main class="pt-28 pb-16 px-5">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-12">
+                <div class="inline-block px-4 py-1 rounded-full bg-amber-500/20 text-amber-300 text-sm font-medium mb-4">⛽ Utility & Gas Token</div>
+                <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-white via-amber-200 to-orange-400 bg-clip-text text-transparent mb-5">United Crypto Bank Token</h1>
+                <p id="hero-desc" class="text-gray-300 text-lg max-w-2xl mx-auto">Powers all transactions, smart contracts, and premium services in Chain Bank ecosystem.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <p class="text-gray-400 text-sm uppercase tracking-wide mb-1">Total Supply</p>
+                    <p class="text-3xl font-bold">1,000,000,000 <span class="text-sm">UCBT</span></p>
+                    <p class="text-xs text-amber-300 mt-2">Fixed supply, deflationary</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <p class="text-gray-400 text-sm uppercase tracking-wide mb-1">Market Cap (FDV)</p>
+                    <p class="text-3xl font-bold">$10,000,000,000</p>
+                    <p class="text-xs text-amber-300 mt-2">Fully diluted valuation</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6 text-center">
+                    <p class="text-gray-400 text-sm uppercase tracking-wide mb-1">Liquidity (Meteora)</p>
+                    <p class="text-3xl font-bold">$698M+</p>
+                    <p class="text-xs text-amber-300 mt-2">UCBT/USDC pool</p>
+                </div>
+            </div>
+
+            <!-- Acquiring Section -->
+            <div class="glass-card rounded-3xl p-5 md:p-8 mb-16 border border-amber-500/30">
+                <div class="flex flex-col lg:flex-row gap-8 items-center">
+                    <div class="flex-1 text-center lg:text-left">
+                        <div class="inline-block px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-xs font-mono mb-3">💳 BUY WITH CARD</div>
+                        <h2 id="buy-title" class="text-2xl md:text-3xl font-bold mb-3">Buy UCBT with Bank Card</h2>
+                        <p id="buy-desc" class="text-gray-300 mb-4">Purchase UCBT directly using Visa, Mastercard, Apple Pay, or Google Pay. Get tokens instantly.</p>
+                        <div class="flex flex-wrap gap-2 justify-center lg:justify-start">
+                            <span class="text-xs bg-white/5 px-3 py-1 rounded-full">🔒 Secure by MoonPay</span>
+                            <span class="text-xs bg-white/5 px-3 py-1 rounded-full">⚡ Gas for ecosystem</span>
+                            <span class="text-xs bg-white/5 px-3 py-1 rounded-full">🔥 2% burn per tx</span>
+                        </div>
+                    </div>
+                    <div class="flex-1 w-full max-w-sm">
+                        <div class="bg-black/40 rounded-2xl p-5 border border-white/10">
+                            <label class="block text-sm font-medium text-gray-300 mb-2" id="amount-label">Amount (USD)</label>
+                            <div class="flex gap-3 mb-4">
+                                <input type="number" id="fiat-amount" value="100" step="10" class="w-full bg-black/60 border border-gray-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-amber-500">
+                                <button id="buy-btn" class="btn-primary px-6 py-3 rounded-xl font-bold whitespace-nowrap">Buy UCBT</button>
+                            </div>
+                            <p id="price-hint" class="text-xs text-gray-400 text-center">~ 1 UCBT = 1.00 USD (via Meteora pool)</p>
+                            <div id="moonpay-container" class="mt-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Utility Features -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="text-3xl mb-3">⛽</div>
+                    <h3 id="util-1-title" class="text-xl font-bold mb-2">Gas Fees</h3>
+                    <p id="util-1-desc" class="text-gray-400 text-sm">Pay for all transactions and smart contract executions within Chain Bank.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="text-3xl mb-3">🔥</div>
+                    <h3 id="util-2-title" class="text-xl font-bold mb-2">Deflationary Burn</h3>
+                    <p id="util-2-desc" class="text-gray-400 text-sm">2% of every transaction is burned, reducing total supply over time.</p>
+                </div>
+                <div class="glass-card rounded-2xl p-6">
+                    <div class="text-3xl mb-3">💎</div>
+                    <h3 id="util-3-title" class="text-xl font-bold mb-2">Premium Access</h3>
+                    <p id="util-3-desc" class="text-gray-400 text-sm">Hold UCBT for reduced fees and access to exclusive banking features.</p>
+                </div>
+            </div>
+
+            <div class="glass-card rounded-2xl p-6">
+                <h3 id="info-title" class="text-xl font-bold mb-4">🔗 Token Contract & Resources</h3>
+                <div class="space-y-2 text-sm break-all">
+                    <div><span class="text-gray-400">Mint Address (Solana):</span> <code class="bg-black/40 px-2 py-1 rounded text-amber-300">AFz6nP2YGpch5sSQaNXzFTJjMxwD7uh7SymZvXHtumQU</code></div>
+                    <div><span class="text-gray-400">Meteora Pool (UCBT/USDC):</span> <a href="https://www.geckoterminal.com/solana/pools/AccWognVnbufKCjUPPwT1WUdRx8ktEFX4sQh3ENvxF4E" target="_blank" class="text-amber-400 hover:underline">View Pool →</a></div>
+                    <div><span class="text-gray-400">Ecosystem:</span> <a href="#" class="text-amber-400 hover:underline">Chain Bank Portal</a></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/10 py-8 text-center text-gray-500 text-sm">
+        <p>© 2026 United Crypto Bank Token — Part of Chain Bank Ecosystem. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const translations = {
+            en: {
+                hero_title: "United Crypto Bank Token", hero_desc: "Powers all transactions, smart contracts, and premium services in Chain Bank ecosystem.",
+                buy_title: "Buy UCBT with Bank Card", buy_desc: "Purchase UCBT directly using Visa, Mastercard, Apple Pay, or Google Pay. Get tokens instantly.",
+                amount_label: "Amount (USD)", price_hint: "~ 1 UCBT = 1.00 USD (via Meteora pool)", buy_btn: "Buy UCBT",
+                util1_title: "Gas Fees", util1_desc: "Pay for all transactions and smart contract executions within Chain Bank.",
+                util2_title: "Deflationary Burn", util2_desc: "2% of every transaction is burned, reducing total supply over time.",
+                util3_title: "Premium Access", util3_desc: "Hold UCBT for reduced fees and access to exclusive banking features.",
+                info_title: "Token Contract & Resources"
+            },
+            es: {
+                hero_title: "United Crypto Bank Token", hero_desc: "Potencia todas las transacciones, contratos inteligentes y servicios premium.",
+                buy_title: "Compra UCBT con Tarjeta", buy_desc: "Compra UCBT directamente con Visa, Mastercard, Apple Pay o Google Pay.",
+                amount_label: "Monto (USD)", price_hint: "~ 1 UCBT = 1.00 USD", buy_btn: "Comprar UCBT",
+                util1_title: "Tarifas de Gas", util1_desc: "Paga todas las transacciones y ejecuciones de contratos.",
+                util2_title: "Quema Deflacionaria", util2_desc: "Se quema el 2% de cada transacción.",
+                util3_title: "Acceso Premium", util3_desc: "Mantén UCBT para tarifas reducidas.",
+                info_title: "Contrato y Recursos"
+            },
+            zh: {
+                hero_title: "联合加密银行代币", hero_desc: "为Chain Bank生态中的所有交易、智能合约和高级服务提供动力。",
+                buy_title: "用银行卡购买UCBT", buy_desc: "直接使用Visa、万事达卡、Apple Pay或Google Pay购买UCBT。",
+                amount_label: "金额 (美元)", price_hint: "~ 1 UCBT = 1.00 美元", buy_btn: "购买UCBT",
+                util1_title: "燃料费", util1_desc: "支付Chain Bank内的所有交易和智能合约执行费用。",
+                util2_title: "通缩燃烧", util2_desc: "每笔交易的2%将被销毁。",
+                util3_title: "高级访问", util3_desc: "持有UCBT可享受更低费率。",
+                info_title: "代币合约和资源"
+            },
+            ru: {
+                hero_title: "United Crypto Bank Token", hero_desc: "Обеспечивает все транзакции, смарт-контракты и премиум-услуги экосистемы.",
+                buy_title: "Купить UCBT картой", buy_desc: "Покупайте UCBT напрямую с Visa, Mastercard, Apple Pay или Google Pay.",
+                amount_label: "Сумма (USD)", price_hint: "~ 1 UCBT = 1.00 USD", buy_btn: "Купить UCBT",
+                util1_title: "Газ", util1_desc: "Оплата транзакций и смарт-контрактов.",
+                util2_title: "Дефляционное сжигание", util2_desc: "2% каждой транзакции сжигается.",
+                util3_title: "Премиум доступ", util3_desc: "Владейте UCBT для сниженных комиссий.",
+                info_title: "Контракт и ресурсы"
+            },
+            ar: {
+                hero_title: "رمز البنك المشفر المتحد", hero_desc: "يدعم جميع المعاملات والعقود الذكية والخدمات المتميزة.",
+                buy_title: "شراء UCBT ببطاقة", buy_desc: "اشترِ UCBT مباشرة باستخدام Visa أو Mastercard أو Apple Pay أو Google Pay.",
+                amount_label: "المبلغ (دولار)", price_hint: "~ 1 UCBT = 1.00 دولار", buy_btn: "شراء UCBT",
+                util1_title: "رسوم الغاز", util1_desc: "دفع جميع المعاملات والعقود الذكية.",
+                util2_title: "حرق انكماشي", util2_desc: "2% من كل معاملة يتم حرقها.",
+                util3_title: "وصول مميز", util3_desc: "احصل على رسوم مخفضة.",
+                info_title: "عقد الرمز والموارد"
+            },
+            fr: {
+                hero_title: "United Crypto Bank Token", hero_desc: "Alimente toutes les transactions, contrats intelligents et services premium.",
+                buy_title: "Acheter UCBT par carte", buy_desc: "Achetez UCBT directement avec Visa, Mastercard, Apple Pay ou Google Pay.",
+                amount_label: "Montant (USD)", price_hint: "~ 1 UCBT = 1.00 USD", buy_btn: "Acheter UCBT",
+                util1_title: "Frais de gaz", util1_desc: "Payez toutes les transactions et exécutions de contrats.",
+                util2_title: "Brûlage déflationniste", util2_desc: "2% de chaque transaction est brûlé.",
+                util3_title: "Accès premium", util3_desc: "Détenez UCBT pour des frais réduits.",
+                info_title: "Contrat et ressources"
+            },
+            de: {
+                hero_title: "United Crypto Bank Token", hero_desc: "Ermöglicht alle Transaktionen, Smart Contracts und Premiumdienste.",
+                buy_title: "UCBT mit Karte kaufen", buy_desc: "Kaufen Sie UCBT direkt mit Visa, Mastercard, Apple Pay oder Google Pay.",
+                amount_label: "Betrag (USD)", price_hint: "~ 1 UCBT = 1,00 USD", buy_btn: "UCBT kaufen",
+                util1_title: "Gasgebühren", util1_desc: "Bezahlen Sie alle Transaktionen und Smart Contracts.",
+                util2_title: "Deflationäres Burning", util2_desc: "2% jeder Transaktion werden verbrannt.",
+                util3_title: "Premium-Zugang", util3_desc: "Halten Sie UCBT für reduzierte Gebühren.",
+                info_title: "Token-Vertrag & Ressourcen"
+            },
+            ja: {
+                hero_title: "ユナイテッド・クリプト・バンク・トークン", hero_desc: "チェーンバンクエコシステムのすべての取引、スマートコントラクト、プレミアムサービスを強化。",
+                buy_title: "UCBTをカードで購入", buy_desc: "Visa、Mastercard、Apple Pay、Google PayでUCBTを購入。",
+                amount_label: "金額 (USD)", price_hint: "~ 1 UCBT = 1.00 USD", buy_btn: "UCBTを購入",
+                util1_title: "ガス料金", util1_desc: "すべての取引とスマートコントラクトを支払う。",
+                util2_title: "デフレバーン", util2_desc: "各取引の2%が燃焼されます。",
+                util3_title: "プレミアムアクセス", util3_desc: "UCBT保有で手数料割引。",
+                info_title: "トークンコントラクトとリソース"
+            }
+        };
+
+        let currentLang = 'en';
+        function setLanguage(lang) {
+            if (!translations[lang]) return;
+            currentLang = lang;
+            const t = translations[lang];
+            document.getElementById('hero-title').innerText = t.hero_title;
+            document.getElementById('hero-desc').innerText = t.hero_desc;
+            document.getElementById('buy-title').innerText = t.buy_title;
+            document.getElementById('buy-desc').innerText = t.buy_desc;
+            document.getElementById('amount-label').innerText = t.amount_label;
+            document.getElementById('price-hint').innerText = t.price_hint;
+            document.getElementById('buy-btn').innerText = t.buy_btn;
+            document.getElementById('util-1-title').innerText = t.util1_title;
+            document.getElementById('util-1-desc').innerText = t.util1_desc;
+            document.getElementById('util-2-title').innerText = t.util2_title;
+            document.getElementById('util-2-desc').innerText = t.util2_desc;
+            document.getElementById('util-3-title').innerText = t.util3_title;
+            document.getElementById('util-3-desc').innerText = t.util3_desc;
+            document.getElementById('info-title').innerText = t.info_title;
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if(btn.dataset.lang === lang) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            localStorage.setItem('ucbt_lang', lang);
+        }
+
+        function renderLanguageButtons() {
+            const container = document.getElementById('language-switcher');
+            const langs = ['en', 'es', 'zh', 'ru', 'ar', 'fr', 'de', 'ja'];
+            const langNames = { en:'EN', es:'ES', zh:'中文', ru:'RU', ar:'AR', fr:'FR', de:'DE', ja:'JP' };
+            container.innerHTML = '';
+            langs.forEach(lang => {
+                const btn = document.createElement('button');
+                btn.innerText = langNames[lang];
+                btn.dataset.lang = lang;
+                btn.className = `lang-btn text-sm ${currentLang === lang ? 'active' : ''}`;
+                btn.addEventListener('click', () => setLanguage(lang));
+                container.appendChild(btn);
+            });
+        }
+
+        const MOONPAY_TEST_API_KEY = "pk_test_5xHkHcH6SxT7sK8nV9jLkL2mN3pO4qR5sT6uV7wX8yZ";
+        const TOKEN_MINT = "AFz6nP2YGpch5sSQaNXzFTJjMxwD7uh7SymZvXHtumQU";
+
+        function initMoonpay(userWallet) {
+            const amount = parseFloat(document.getElementById('fiat-amount').value) || 100;
+            const widgetConfig = {
+                type: 'onramp',
+                apiKey: MOONPAY_TEST_API_KEY,
+                walletAddress: userWallet,
+                currencyCode: 'usdc_sol',
+                baseCurrencyCode: 'usd',
+                baseCurrencyAmount: amount,
+                theme: 'dark',
+                language: currentLang,
+                defaultPaymentMethod: 'credit_card',
+                uiConfig: { accentColor: '#F59E0B' }
+            };
+            const container = document.getElementById('moonpay-container');
+            container.innerHTML = '';
+            const widget = MoonPay.createWidget(widgetConfig);
+            widget.mount(container);
+            widget.on('transaction_status_changed', (event) => {
+                if(event.type === 'transaction_status_changed' && event.payload?.status === 'completed') {
+                    alert(`Purchase completed! ${event.payload.currencyAmount} USDC sent. Swap USDC → UCBT on Meteora pool.`);
+                }
+            });
+            container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.getElementById('buy-btn').addEventListener('click', () => {
+            let wallet = prompt("Enter your Solana wallet address (Phantom/Backpack):");
+            if(!wallet || wallet.trim() === "") { alert("Wallet address required."); return; }
+            initMoonpay(wallet.trim());
+        });
+
+        const savedLang = localStorage.getItem('ucbt_lang');
+        if(savedLang && translations[savedLang]) currentLang = savedLang;
+        renderLanguageButtons();
+        setLanguage(currentLang);
+    </script>
+</body>
+</html>
